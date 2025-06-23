@@ -41,3 +41,16 @@ The request body should be a JSON object with the following properties:
   - `email` (string): Must be a valid email and at least 5 characters long.
   - `password` (string): users' password (Minimum 6 characters.).
 -`token` (String): JWT Token
+
+## Error Responses
+
+- `401 Unauthorized`: Invalid email or password.
+- `400 Bad Request`: Validation errors (e.g., invalid email format, password too short).
+
+**Example:**
+
+```json
+{
+  "message": "Invalid email or password"
+}
+```
