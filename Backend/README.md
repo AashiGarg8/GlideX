@@ -54,3 +54,58 @@ The request body should be a JSON object with the following properties:
   "message": "Invalid email or password"
 }
 ```
+## `/users/profile` Endpoint
+
+### HTTP Method
+`GET`
+
+### Description
+Returns the authenticated user's profile information.  
+Requires a valid JWT token in the `Authorization` header or as a cookie.
+
+### Authentication
+- **Required:** Yes (JWT token)
+
+### Request Headers
+- `Authorization: Bearer <token>` (or token cookie)
+
+### Example Response
+```json
+{
+  "_id": "60c72b2f9b1e8e001c8e4b8a",
+  "email": "johndoe@example.com",
+  "fullname": {
+    "firstname": "John",
+    "lastname": "Doe"
+  }
+}
+```
+
+### Error Responses
+- `401 Unauthorized`: If the token is missing, invalid, or blacklisted.
+
+---
+
+## `/users/logout` Endpoint
+
+### HTTP Method
+`GET`
+
+### Description
+Logs out the authenticated user by blacklisting the current JWT token and clearing the token cookie.
+
+### Authentication
+- **Required:** Yes (JWT token)
+
+### Request Headers
+- `Authorization: Bearer <token>` (or token cookie)
+
+### Example Response
+```json
+{
+  "message": "logged out"
+}
+```
+
+### Error Responses
+- `401 Unauthorized`: If the token is missing, invalid, or already blacklisted.
