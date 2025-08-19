@@ -110,7 +110,7 @@ Logs out the authenticated user by blacklisting the current JWT token and cleari
 ### Error Responses
 - `401 Unauthorized`: If the token is missing, invalid, or already blacklisted.
 
-## `/captain/register` Endpoint
+## `/captains/register` Endpoint
 
 ### HTTP Method
 
@@ -200,5 +200,89 @@ or
 ```json
 {
   "message": "Captain with this email already exists"
+}
+```
+## `/captain/register` Endpoint
+
+### HTTP Method
+
+`POST`
+
+### Description
+
+Registers a new captain (driver) with vehicle details. Validates the input data, creates a captain record, and returns the created captain details and a JWT token.
+
+---
+
+### Request Body
+
+```jsonc
+{
+  "fullname": {
+    "firstname": "Jane",         // string, required, min 3 chars
+    "lastname": "Smith"          // string, required, min 3 chars
+  },
+  "email": "janesmith@example.com", // string, required, must be a valid email
+  "password": "securePass123",      // string, required, min 6 chars
+  "vehicle": {
+    "color": "blue",             // string, required, min 3 chars
+    "plate": "XYZ987",           // string, required, min 3 chars
+    "capacity": 4,               // number, required, min 1
+    "vehicleType": "car"         // string, required, one of: "car", "motorcycle", "auto"
+  }
+}
+```
+
+---
+
+### Example Response
+
+```jsonc
+{
+  "token": "JWT_TOKEN_HERE", // string, JWT authentication token
+  "captain": {
+    "_id": "60c72b2f9b1e8e001c8e4b8b", // string, captain's unique ID
+    "fullname": {
+      "firstname": "Jane",   // string
+      "lastname": "Smith"    // string
+    },
+    "email": "janesmith@example.com", // string
+    "vehicle": {
+      "color": "blue",       // string
+      "plate": "XYZ987",     // string
+      "capacity": 4,         // number
+      "vehicleType": "car"   // string
+    }
+  }
+}
+```
+
+---
+
+### Error Responses
+
+- `400 Bad Request`: Validation errors (e.g., invalid email, password too short, missing fields).
+- `400 Bad Request`: Captain with this email already exists.
+
+**Example:**
+
+```jsonc
+{
+  "errors": [
+    {
+      "type": "field",
+      "msg": "Password must be at least 6 characters long", // error message
+      "path": "password",                                   // field with error
+      "location": "body"
+    }
+  ]
+}
+```
+
+or
+
+```jsonc
+{
+  "message": "Captain with this email already exists" // error message if email is duplicate
 }
 ```
